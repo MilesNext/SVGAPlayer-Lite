@@ -45,8 +45,8 @@ pod install
 1. 克隆或下载本仓库
 2. 将 `Source` 文件夹拖入你的项目
 3. 添加依赖：
-   - SSZipArchive (~> 2.4)
-   - Protobuf (~> 3.27)
+   - SSZipArchive (2.4.3)
+   - Protobuf (3.27.2)
 
 ## 使用方法
 
@@ -157,8 +157,10 @@ player.delegate = self;
 
 ## 依赖
 
-- SSZipArchive (~> 2.4)
-- Protobuf (~> 3.27)
+- SSZipArchive (2.4.3)
+- Protobuf (3.27.2)
+
+> 注：为确保所有用户使用相同的依赖版本，本项目使用固定版本号而非版本范围。
 
 ## 与 SVGAPlayer 的区别
 
@@ -183,6 +185,12 @@ Apache License 2.0
 欢迎提交 Issue 和 Pull Request！
 
 ## 更新日志
+
+### 1.0.5 (2026-01-15)
+- 锁定依赖版本以确保一致性
+- SSZipArchive 固定为 2.4.3
+- Protobuf 固定为 3.27.2
+- 避免不同用户因版本差异导致的兼容性问题
 
 ### 1.0.4 (2026-01-15)
 - 更新依赖版本约束以提升兼容性

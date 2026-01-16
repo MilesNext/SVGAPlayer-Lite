@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "SVGAPlayerLite"
-  s.version      = "1.0.4"
+  s.version      = "1.0.5"
   s.summary      = "SVGAPlayerLite 是一个轻量级高性能的动画播放器"
   s.description  = <<-DESC
                    SVGAPlayerLite 是基于 SVGAPlayer 的轻量级版本；
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |ss|
     ss.source_files  = "Source/*.{h,m}"
     ss.requires_arc = true
-    ss.dependency 'SSZipArchive', '~> 2.4'
+    ss.dependency 'SSZipArchive', '2.4.3'
     ss.library = "z"
     ss.framework = "AVFoundation"
     ss.dependency 'SVGAPlayerLite/ProtoFiles'
@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
   s.subspec 'ProtoFiles' do |ss|
     ss.source_files  = "Source/pbobjc/*.{h,m}"
     ss.requires_arc = false
-    ss.dependency 'Protobuf', '~> 3.27'
+    ss.dependency 'Protobuf', '3.27.2'
     ss.pod_target_xcconfig = {
       'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) GPB_USE_PROTOBUF_FRAMEWORK_IMPORTS=1',
       'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
