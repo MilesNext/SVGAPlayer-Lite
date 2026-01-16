@@ -45,8 +45,8 @@ pod install
 1. 克隆或下载本仓库
 2. 将 `Source` 文件夹拖入你的项目
 3. 添加依赖：
-   - SSZipArchive (>= 1.8.1)
-   - Protobuf (~> 3.4)
+   - SSZipArchive (~> 2.4)
+   - Protobuf (~> 3.27)
 
 ## 使用方法
 
@@ -152,13 +152,13 @@ player.delegate = self;
 
 ## 系统要求
 
-- iOS 9.0+
+- iOS 12.0+
 - Xcode 11.0+
 
 ## 依赖
 
-- SSZipArchive (>= 1.8.1)
-- Protobuf (~> 3.4)
+- SSZipArchive (~> 2.4)
+- Protobuf (~> 3.27)
 
 ## 与 SVGAPlayer 的区别
 
@@ -183,6 +183,22 @@ Apache License 2.0
 欢迎提交 Issue 和 Pull Request！
 
 ## 更新日志
+
+### 1.0.4 (2026-01-15)
+- 更新依赖版本约束以提升兼容性
+- SSZipArchive 更新至 ~> 2.4
+- Protobuf 更新至 ~> 3.27
+- 改进依赖管理策略
+
+### 1.0.3 (2025-01-14)
+- 更新作者邮箱以保护隐私
+- 添加完整的 Swift 兼容性文档
+
+### 1.0.2
+- 性能优化与依赖更新
+
+### 1.0.1
+- 添加 CocoaPods Trunk 发布指南
 
 ### 1.0.0
 - 初始版本
