@@ -14,7 +14,7 @@ SVGAPlayer-Lite 是一个轻量级高性能的 SVGA 动画播放器，基于 SVG
 - 📦 **包体积减少 15-20%** - 移除过时代码
 - 🎯 **稳定 60 FPS** - 优化渲染性能
 
-📊 **[查看详细优化说明](OPTIMIZATION.md)**
+📊 **[查看详细优化说明](OPTIMIZATION_CN.md)**
 
 ## 特性
 
@@ -24,7 +24,7 @@ SVGAPlayer-Lite 是一个轻量级高性能的 SVGA 动画播放器，基于 SVG
 - 💪 高性能渲染引擎
 - 🔧 易于集成和使用
 - ✅ 支持 iOS 12.0+
-- 🔥 **完美支持 Swift** - [查看 Swift 兼容性说明](SWIFT_COMPATIBILITY.md)
+- 🔥 **完美支持 Swift** - [查看 Swift 兼容性说明](SWIFT_COMPATIBILITY_CN.md)
 
 ## 安装
 

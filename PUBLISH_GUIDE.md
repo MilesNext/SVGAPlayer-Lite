@@ -1,101 +1,103 @@
-# 发布 SVGAPlayerLite 到 CocoaPods Trunk 指南
+# Publishing SVGAPlayerLite to CocoaPods Trunk Guide
 
-## 当前状态
+[中文文档](PUBLISH_GUIDE_CN.md) | English
 
-✅ 项目已推送到 GitHub: https://github.com/jfyGiveMeFive/SVGAPlayer-Lite
-✅ 版本标签已创建: 1.0.1
-✅ Podspec 验证通过
+## Current Status
 
-## 发布步骤
+✅ Project pushed to GitHub: https://github.com/jfyGiveMeFive/SVGAPlayer-Lite
+✅ Version tag created: 1.0.1
+✅ Podspec validation passed
 
-### 1. 注册 CocoaPods Trunk 账号
+## Publishing Steps
 
-如果你还没有注册过 CocoaPods Trunk 账号，需要先注册：
+### 1. Register CocoaPods Trunk Account
+
+If you haven't registered a CocoaPods Trunk account yet, you need to register first:
 
 ```bash
 pod trunk register YOUR_EMAIL@example.com 'Your Name' --description='MacBook Pro'
 ```
 
-**示例：**
+**Example:**
 ```bash
 pod trunk register aygtech@qq.com 'jfyGiveMeFive' --description='MacBook Pro'
 ```
 
-执行后，CocoaPods 会发送一封验证邮件到你的邮箱。
+After execution, CocoaPods will send a verification email to your mailbox.
 
-### 2. 验证邮箱
+### 2. Verify Email
 
-1. 检查你的邮箱（包括垃圾邮件文件夹）
-2. 点击邮件中的验证链接
-3. 验证成功后，你就可以发布 Pod 了
+1. Check your email inbox (including spam folder)
+2. Click the verification link in the email
+3. After successful verification, you can publish Pods
 
-### 3. 验证你的 Trunk 账号
+### 3. Verify Your Trunk Account
 
 ```bash
 pod trunk me
 ```
 
-这会显示你的账号信息和已发布的 Pods。
+This will display your account information and published Pods.
 
-### 4. 发布到 CocoaPods Trunk
+### 4. Publish to CocoaPods Trunk
 
 ```bash
 cd /Users/ourtalk/Desktop/SVGAPlayer-Lite
 pod trunk push SVGAPlayerLite.podspec --allow-warnings
 ```
 
-**注意：**
-- 使用 `--allow-warnings` 是因为有一些不影响功能的警告
-- 发布过程可能需要几分钟
-- 发布成功后，CocoaPods 会自动更新索引
+**Note:**
+- Use `--allow-warnings` because there are some warnings that don't affect functionality
+- The publishing process may take a few minutes
+- After successful publication, CocoaPods will automatically update the index
 
-### 5. 验证发布成功
+### 5. Verify Successful Publication
 
-发布成功后，等待 5-10 分钟，然后可以搜索你的 Pod：
+After successful publication, wait 5-10 minutes, then you can search for your Pod:
 
 ```bash
 pod search SVGAPlayerLite
 ```
 
-或者访问 CocoaPods 官网查看：
+Or visit the CocoaPods website to check:
 https://cocoapods.org/pods/SVGAPlayerLite
 
-## 使用方式
+## Usage
 
-发布成功后，其他开发者可以通过以下方式使用：
+After successful publication, other developers can use it in the following ways:
 
-### 方式一：直接使用（推荐）
+### Method 1: Direct Use (Recommended)
 
 ```ruby
 pod 'SVGAPlayerLite'
 ```
 
-### 方式二：指定版本
+### Method 2: Specify Version
 
 ```ruby
 pod 'SVGAPlayerLite', '~> 1.0.1'
 ```
 
-### 方式三：使用 Git（发布前或测试）
+### Method 3: Use Git (Before Publishing or for Testing)
 
 ```ruby
 pod 'SVGAPlayerLite', :git => 'https://github.com/jfyGiveMeFive/SVGAPlayer-Lite.git', :tag => '1.0.1'
 ```
 
-## 更新版本
+## Updating Versions
 
-当你需要发布新版本时：
+When you need to publish a new version:
 
-### 1. 修改代码并测试
+### 1. Modify Code and Test
 
-### 2. 更新版本号
+### 2. Update Version Number
 
-编辑 `SVGAPlayerLite.podspec`，修改版本号：
+Edit `SVGAPlayerLite.podspec` and modify the version number:
 ```ruby
 s.version = "1.0.2"
 ```
 
-### 3. 提交并推送
+### 3. Commit and Push
 
 ```bash
 git add .
@@ -103,79 +105,79 @@ git commit -m "Release version 1.0.2"
 git push origin main
 ```
 
-### 4. 创建新标签
+### 4. Create New Tag
 
 ```bash
 git tag 1.0.2
 git push origin 1.0.2
 ```
 
-### 5. 验证 podspec
+### 5. Validate Podspec
 
 ```bash
 pod spec lint SVGAPlayerLite.podspec --allow-warnings
 ```
 
-### 6. 发布新版本
+### 6. Publish New Version
 
 ```bash
 pod trunk push SVGAPlayerLite.podspec --allow-warnings
 ```
 
-## 常见问题
+## Common Issues
 
-### Q: 发布失败，提示 "Unable to find a pod with name"
-A: 这是正常的，因为这是第一次发布。继续执行发布命令即可。
+### Q: Publication failed with "Unable to find a pod with name"
+A: This is normal for the first publication. Continue with the publish command.
 
-### Q: 发布后搜索不到
-A: 等待 5-10 分钟让 CocoaPods 更新索引，然后更新本地 Pod 仓库：
+### Q: Cannot find Pod after publication
+A: Wait 5-10 minutes for CocoaPods to update the index, then update your local Pod repository:
 ```bash
 pod repo update
 pod search SVGAPlayerLite
 ```
 
-### Q: 如何删除已发布的版本
-A: CocoaPods 不支持删除已发布的版本。如果有问题，只能发布新版本修复。
+### Q: How to delete a published version
+A: CocoaPods does not support deleting published versions. If there's an issue, you can only publish a new version to fix it.
 
-### Q: 发布时提示权限错误
-A: 确保你已经注册并验证了 CocoaPods Trunk 账号。运行 `pod trunk me` 检查。
+### Q: Permission error during publication
+A: Make sure you have registered and verified your CocoaPods Trunk account. Run `pod trunk me` to check.
 
-### Q: 如何转移 Pod 所有权
-A: 使用以下命令添加其他维护者：
+### Q: How to transfer Pod ownership
+A: Use the following command to add other maintainers:
 ```bash
 pod trunk add-owner SVGAPlayerLite other-email@example.com
 ```
 
-## 维护建议
+## Maintenance Recommendations
 
-1. **语义化版本控制**
-   - 主版本号：不兼容的 API 修改
-   - 次版本号：向下兼容的功能性新增
-   - 修订号：向下兼容的问题修正
+1. **Semantic Versioning**
+   - Major version: Incompatible API changes
+   - Minor version: Backward-compatible functionality additions
+   - Patch version: Backward-compatible bug fixes
 
-2. **更新日志**
-   - 在 README.md 中维护 CHANGELOG
-   - 每次发布都记录主要变更
+2. **Changelog**
+   - Maintain a CHANGELOG in README.md
+   - Record major changes with each release
 
-3. **测试**
-   - 发布前在实际项目中测试
-   - 确保 podspec 验证通过
+3. **Testing**
+   - Test in actual projects before publishing
+   - Ensure podspec validation passes
 
-4. **文档**
-   - 保持 README.md 更新
-   - 提供清晰的使用示例
+4. **Documentation**
+   - Keep README.md updated
+   - Provide clear usage examples
 
-## 相关链接
+## Related Links
 
-- GitHub 仓库: https://github.com/jfyGiveMeFive/SVGAPlayer-Lite
-- CocoaPods 官网: https://cocoapods.org
-- CocoaPods Trunk 指南: https://guides.cocoapods.org/making/getting-setup-with-trunk.html
+- GitHub Repository: https://github.com/jfyGiveMeFive/SVGAPlayer-Lite
+- CocoaPods Official Site: https://cocoapods.org
+- CocoaPods Trunk Guide: https://guides.cocoapods.org/making/getting-setup-with-trunk.html
 
-## 当前版本信息
+## Current Version Information
 
-- **版本**: 1.0.1
-- **最低支持**: iOS 12.0+
-- **依赖**:
+- **Version**: 1.0.1
+- **Minimum Support**: iOS 12.0+
+- **Dependencies**:
   - SSZipArchive >= 1.8.1
   - Protobuf ~> 3.27
-- **许可证**: Apache 2.0
+- **License**: Apache 2.0

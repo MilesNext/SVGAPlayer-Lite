@@ -1,140 +1,142 @@
-# SVGAPlayer-Lite CocoaPods 集成指南
+# SVGAPlayer-Lite CocoaPods Integration Guide
 
-## 概述
+[中文文档](COCOAPODS_GUIDE_CN.md) | English
 
-SVGAPlayer-Lite 现已支持通过 CocoaPods 进行集成。本指南将帮助你快速将 SVGAPlayer-Lite 集成到你的项目中。
+## Overview
 
-## 方式一：本地 Pod 集成（推荐用于开发）
+SVGAPlayer-Lite now supports integration via CocoaPods. This guide will help you quickly integrate SVGAPlayer-Lite into your project.
 
-如果你已经下载了 SVGAPlayer-Lite 源码，可以使用本地 Pod 方式集成：
+## Method 1: Local Pod Integration (Recommended for Development)
 
-### 1. 在 Podfile 中添加本地路径
+If you have already downloaded the SVGAPlayer-Lite source code, you can integrate it using the local Pod method:
+
+### 1. Add Local Path in Podfile
 
 ```ruby
-# 指定本地路径
+# Specify local path
 pod 'SVGAPlayerLite', :path => '/Users/ourtalk/Desktop/SVGAPlayer-Lite'
 
-# 或使用相对路径（如果 Podfile 和 SVGAPlayer-Lite 在同一目录下）
+# Or use relative path (if Podfile and SVGAPlayer-Lite are in the same directory)
 pod 'SVGAPlayerLite', :path => '../SVGAPlayer-Lite'
 ```
 
-### 2. 安装依赖
+### 2. Install Dependencies
 
 ```bash
 cd YourProject
 pod install
 ```
 
-### 3. 使用 workspace 打开项目
+### 3. Open Project with Workspace
 
 ```bash
 open YourProject.xcworkspace
 ```
 
-## 方式二：Git 仓库集成
+## Method 2: Git Repository Integration
 
-如果你的 SVGAPlayer-Lite 已经推送到 Git 仓库，可以直接引用：
+If your SVGAPlayer-Lite has been pushed to a Git repository, you can reference it directly:
 
-### 1. 在 Podfile 中添加 Git 地址
+### 1. Add Git URL in Podfile
 
 ```ruby
-# 使用 Git 仓库
+# Use Git repository
 pod 'SVGAPlayerLite', :git => 'https://github.com/yourusername/SVGAPlayer-Lite.git', :tag => '1.0.0'
 
-# 或使用分支
+# Or use branch
 pod 'SVGAPlayerLite', :git => 'https://github.com/yourusername/SVGAPlayer-Lite.git', :branch => 'main'
 
-# 或使用 commit
+# Or use commit
 pod 'SVGAPlayerLite', :git => 'https://github.com/yourusername/SVGAPlayer-Lite.git', :commit => 'abc123'
 ```
 
-### 2. 安装依赖
+### 2. Install Dependencies
 
 ```bash
 pod install
 ```
 
-## 方式三：发布到 CocoaPods Trunk（用于公开发布）
+## Method 3: Publish to CocoaPods Trunk (For Public Release)
 
-如果你想将 SVGAPlayer-Lite 发布到 CocoaPods 官方仓库：
+If you want to publish SVGAPlayer-Lite to the official CocoaPods repository:
 
-### 1. 注册 CocoaPods Trunk 账号
+### 1. Register CocoaPods Trunk Account
 
 ```bash
 pod trunk register your-email@example.com 'Your Name' --description='Your Description'
 ```
 
-### 2. 验证邮箱
+### 2. Verify Email
 
-检查你的邮箱并点击验证链接。
+Check your email and click the verification link.
 
-### 3. 更新 podspec 文件
+### 3. Update Podspec File
 
-编辑 `SVGAPlayerLite.podspec`，将 `s.source` 改为实际的 Git 仓库地址：
+Edit `SVGAPlayerLite.podspec` and change `s.source` to your actual Git repository URL:
 
 ```ruby
 s.source = { :git => "https://github.com/yourusername/SVGAPlayer-Lite.git", :tag => s.version }
 ```
 
-### 4. 创建 Git Tag
+### 4. Create Git Tag
 
 ```bash
 git tag 1.0.0
 git push origin 1.0.0
 ```
 
-### 5. 验证 podspec
+### 5. Validate Podspec
 
 ```bash
 pod spec lint SVGAPlayerLite.podspec --allow-warnings
 ```
 
-### 6. 发布到 CocoaPods
+### 6. Publish to CocoaPods
 
 ```bash
 pod trunk push SVGAPlayerLite.podspec --allow-warnings
 ```
 
-### 7. 在项目中使用
+### 7. Use in Projects
 
-发布成功后，其他开发者可以直接在 Podfile 中添加：
+After successful publication, other developers can add it directly in their Podfile:
 
 ```ruby
 pod 'SVGAPlayerLite'
 ```
 
-## 完整的 Podfile 示例
+## Complete Podfile Example
 
 ```ruby
 platform :ios, '12.0'
 use_frameworks!
 
 target 'YourApp' do
-  # 本地集成方式
+  # Local integration method
   pod 'SVGAPlayerLite', :path => '../SVGAPlayer-Lite'
 
-  # 或 Git 集成方式
+  # Or Git integration method
   # pod 'SVGAPlayerLite', :git => 'https://github.com/yourusername/SVGAPlayer-Lite.git', :tag => '1.0.0'
 
-  # 或公开发布后
+  # Or after public release
   # pod 'SVGAPlayerLite', '~> 1.0.0'
 
-  # 其他依赖...
+  # Other dependencies...
 end
 ```
 
-## 在代码中使用
+## Usage in Code
 
 ### Objective-C
 
 ```objective-c
 #import <SVGAPlayerLite/SVGA.h>
 
-// 创建播放器
+// Create player
 SVGAPlayer *player = [[SVGAPlayer alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
 [self.view addSubview:player];
 
-// 加载并播放动画
+// Load and play animation
 SVGAParser *parser = [[SVGAParser alloc] init];
 [parser parseWithURL:[NSURL URLWithString:@"https://example.com/animation.svga"]
      completionBlock:^(SVGAVideoEntity * _Nullable videoItem) {
@@ -148,11 +150,11 @@ SVGAParser *parser = [[SVGAParser alloc] init];
 ```swift
 import SVGAPlayerLite
 
-// 创建播放器
+// Create player
 let player = SVGAPlayer(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
 view.addSubview(player)
 
-// 加载并播放动画
+// Load and play animation
 let parser = SVGAParser()
 parser.parse(with: URL(string: "https://example.com/animation.svga"), completionBlock: { videoItem in
     player.videoItem = videoItem
@@ -160,61 +162,61 @@ parser.parse(with: URL(string: "https://example.com/animation.svga"), completion
 }, failureBlock: nil)
 ```
 
-## 常见问题
+## Common Issues
 
-### 1. 找不到头文件
+### 1. Header File Not Found
 
-确保在导入时使用模块名称：
+Make sure to use the module name when importing:
 ```objective-c
-#import <SVGAPlayerLite/SVGA.h>  // 正确
-// 而不是
-#import "SVGA.h"  // 错误
+#import <SVGAPlayerLite/SVGA.h>  // Correct
+// Instead of
+#import "SVGA.h"  // Incorrect
 ```
 
-### 2. 编译警告
+### 2. Compilation Warnings
 
-podspec 验证时可能会出现一些警告，这是正常的。使用 `--allow-warnings` 参数可以忽略这些警告。
+Some warnings may appear during podspec validation, which is normal. Use the `--allow-warnings` parameter to ignore these warnings.
 
-### 3. 最低部署目标
+### 3. Minimum Deployment Target
 
-SVGAPlayer-Lite 要求 iOS 12.0 或更高版本。确保你的项目部署目标不低于此版本。
+SVGAPlayer-Lite requires iOS 12.0 or higher. Make sure your project deployment target is not lower than this version.
 
-### 4. 依赖冲突
+### 4. Dependency Conflicts
 
-如果遇到依赖冲突，可以尝试：
+If you encounter dependency conflicts, try:
 ```bash
 pod deintegrate
 pod install
 ```
 
-## 更新版本
+## Updating Versions
 
-### 更新本地 Pod
+### Update Local Pod
 
 ```bash
 pod update SVGAPlayerLite
 ```
 
-### 更新所有 Pods
+### Update All Pods
 
 ```bash
 pod update
 ```
 
-## 卸载
+## Uninstallation
 
-从 Podfile 中删除 `pod 'SVGAPlayerLite'` 这一行，然后运行：
+Remove the `pod 'SVGAPlayerLite'` line from your Podfile, then run:
 
 ```bash
 pod install
 ```
 
-## 技术支持
+## Technical Support
 
-如有问题，请访问：
-- GitHub Issues: [提交问题](https://github.com/yourusername/SVGAPlayer-Lite/issues)
-- SVGA 官网: http://svga.io/
+For questions, please visit:
+- GitHub Issues: [Submit Issue](https://github.com/yourusername/SVGAPlayer-Lite/issues)
+- SVGA Official Website: http://svga.io/
 
-## 许可证
+## License
 
 Apache License 2.0

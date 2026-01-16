@@ -1,41 +1,41 @@
-# SVGAPlayer-Lite Swift Compatibility Guide
+# SVGAPlayer-Lite Swift 兼容性说明
 
-[中文文档](SWIFT_COMPATIBILITY_CN.md) | English
+中文文档 | [English](SWIFT_COMPATIBILITY.md)
 
-## Compatibility Rating: ⭐️⭐️⭐️⭐️⭐️ (5/5)
+## 兼容性评级：⭐️⭐️⭐️⭐️⭐️ (5/5)
 
-SVGAPlayer-Lite provides **perfect compatibility** with Swift. As an Objective-C framework, it follows all best practices for Swift interoperability.
+SVGAPlayer-Lite 对 Swift 提供了**完美的兼容性**。作为一个 Objective-C 框架，它遵循了所有 Swift 互操作性的最佳实践。
 
-## ✅ Fully Compatible Features
+## ✅ 完全兼容的特性
 
-### 1. Type Safety
+### 1. 类型安全
 
-All APIs use proper nullability annotations (`nullable`/`nonnull`), automatically converted to optional types in Swift:
+所有 API 都使用了正确的可空性注解（`nullable`/`nonnull`），在 Swift 中自动转换为可选类型：
 
 ```swift
-// Objective-C definition
+// Objective-C 定义
 - (void)parseWithURL:(nonnull NSURL *)URL
      completionBlock:(void (^_Nonnull)(SVGAVideoEntity *_Nullable videoItem))completionBlock
         failureBlock:(void (^_Nullable)(NSError *_Nullable error))failureBlock;
 
-// Swift usage - Type safe
-parser.parse(with: url) { videoItem in  // videoItem is SVGAVideoEntity?
+// Swift 中使用 - 类型安全
+parser.parse(with: url) { videoItem in  // videoItem 是 SVGAVideoEntity?
     if let item = videoItem {
-        // Safe unwrapping
+        // 安全解包
     }
-} failureBlock: { error in  // error is Error?
+} failureBlock: { error in  // error 是 Error?
     if let err = error {
         print(err.localizedDescription)
     }
 }
 ```
 
-### 2. Closure Syntax
+### 2. 闭包语法
 
-Perfect support for Swift's trailing closure syntax:
+完美支持 Swift 的尾随闭包语法：
 
 ```swift
-// ✅ Trailing closure
+// ✅ 尾随闭包
 parser.parse(with: url) { videoItem in
     player.videoItem = videoItem
     player.startAnimation()
@@ -43,34 +43,34 @@ parser.parse(with: url) { videoItem in
     print("Error: \(error)")
 }
 
-// ✅ Simplified syntax
+// ✅ 简化语法
 parser.parse(withNamed: "animation", in: nil) { videoItem in
     player.videoItem = videoItem
     player.startAnimation()
 } failureBlock: nil
 ```
 
-### 3. Property Access
+### 3. 属性访问
 
-All properties are directly accessible with dot syntax:
+所有属性都可以直接访问，支持点语法：
 
 ```swift
-// ✅ Property read/write
+// ✅ 属性读写
 player.loops = 0
 player.clearsAfterStop = true
 player.fillMode = "Forward"
 player.videoItem = videoItem
 
-// ✅ Delegate assignment
+// ✅ 代理设置
 player.delegate = self
 
-// ✅ Parser configuration
+// ✅ 解析器配置
 parser.enabledMemoryCache = true
 ```
 
-### 4. Method Calls
+### 4. 方法调用
 
-Method names are automatically converted to Swift style:
+方法名自动转换为 Swift 风格：
 
 ```swift
 // Objective-C: [player startAnimation]
@@ -83,57 +83,57 @@ player.step(toFrame: 10, andPlay: true)
 player.setImage(image, forKey: "key")
 ```
 
-### 5. Delegate Protocol
+### 5. 代理协议
 
-Perfect support for Swift protocol implementation:
+完美支持 Swift 的协议实现：
 
 ```swift
 extension MyViewController: SVGAPlayerDelegate {
     func svgaPlayerDidFinishedAnimation(_ player: SVGAPlayer) {
-        print("Animation finished")
+        print("动画完成")
     }
 
     func svgaPlayer(_ player: SVGAPlayer, didAnimatedToFrame frame: Int) {
-        print("Current frame: \(frame)")
+        print("当前帧: \(frame)")
     }
 
     func svgaPlayer(_ player: SVGAPlayer, didAnimatedToPercentage percentage: CGFloat) {
-        print("Progress: \(percentage * 100)%")
+        print("进度: \(percentage * 100)%")
     }
 }
 ```
 
-### 6. Enums and Constants
+### 6. 枚举和常量
 
-Supports Swift's type inference:
+支持 Swift 的类型推断：
 
 ```swift
-// ✅ String constants
-player.fillMode = "Forward"  // or "Backward"
+// ✅ 字符串常量
+player.fillMode = "Forward"  // 或 "Backward"
 
-// ✅ Integer types
-player.loops = 0  // Int32 automatic conversion
+// ✅ 整数类型
+player.loops = 0  // Int32 自动转换
 ```
 
-### 7. Error Handling
+### 7. 错误处理
 
-While not Swift's `throws` style, the closure approach is equally elegant:
+虽然不是 Swift 的 `throws` 风格，但闭包方式同样优雅：
 
 ```swift
 parser.parse(with: url) { videoItem in
-    // Success handling
+    // 成功处理
 } failureBlock: { error in
-    // Error handling - Type safe
+    // 错误处理 - 类型安全
     if let error = error {
-        // error is Error type
+        // error 是 Error 类型
         print(error.localizedDescription)
     }
 }
 ```
 
-## 🎯 Swift Usage Examples
+## 🎯 Swift 使用示例
 
-### Basic Usage
+### 基础使用
 
 ```swift
 import UIKit
@@ -147,14 +147,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Create player
+        // 创建播放器
         player = SVGAPlayer(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         player.center = view.center
         player.loops = 0
         player.delegate = self
         view.addSubview(player)
 
-        // Load animation
+        // 加载动画
         loadAnimation()
     }
 
@@ -168,32 +168,32 @@ class ViewController: UIViewController {
             self.player.videoItem = item
             self.player.startAnimation()
         } failureBlock: { error in
-            print("Load failed: \(error?.localizedDescription ?? "Unknown error")")
+            print("加载失败: \(error?.localizedDescription ?? "Unknown error")")
         }
     }
 }
 
 extension ViewController: SVGAPlayerDelegate {
     func svgaPlayerDidFinishedAnimation(_ player: SVGAPlayer) {
-        print("Animation playback completed")
+        print("动画播放完成")
     }
 }
 ```
 
-### Dynamic Replacement
+### 动态替换
 
 ```swift
-// Replace image
+// 替换图片
 if let image = UIImage(named: "avatar") {
     player.setImage(image, forKey: "avatar")
 }
 
-// Network image
+// 网络图片
 if let url = URL(string: "https://example.com/image.png") {
     player.setImage(with: url, forKey: "avatar")
 }
 
-// Replace text
+// 替换文本
 let attributes: [NSAttributedString.Key: Any] = [
     .font: UIFont.boldSystemFont(ofSize: 24),
     .foregroundColor: UIColor.white
@@ -201,23 +201,23 @@ let attributes: [NSAttributedString.Key: Any] = [
 let text = NSAttributedString(string: "Hello", attributes: attributes)
 player.setAttributedText(text, forKey: "title")
 
-// Custom drawing
+// 自定义绘制
 player.setDrawingBlock({ layer, frameIndex in
-    // Custom drawing
+    // 自定义绘制
     print("Frame: \(frameIndex)")
 }, forKey: "custom")
 ```
 
-### Local Resource Loading
+### 本地资源加载
 
 ```swift
-// Load from Bundle
+// 从 Bundle 加载
 parser.parse(withNamed: "animation", in: nil) { videoItem in
     player.videoItem = videoItem
     player.startAnimation()
 } failureBlock: nil
 
-// Load from Data
+// 从 Data 加载
 if let path = Bundle.main.path(forResource: "animation", ofType: "svga"),
    let data = try? Data(contentsOf: URL(fileURLWithPath: path)) {
     parser.parse(with: data, cacheKey: "animation") { videoItem in
@@ -227,34 +227,34 @@ if let path = Bundle.main.path(forResource: "animation", ofType: "svga"),
 }
 ```
 
-### Playback Control
+### 播放控制
 
 ```swift
-// Start playback
+// 开始播放
 player.startAnimation()
 
-// Range playback
+// 范围播放
 player.startAnimation(with: NSRange(location: 0, length: 30), reverse: false)
 
-// Pause
+// 暂停
 player.pauseAnimation()
 
-// Stop
+// 停止
 player.stopAnimation()
 
-// Clear
+// 清除
 player.clear()
 
-// Step to specific frame
+// 跳转到指定帧
 player.step(toFrame: 10, andPlay: true)
 
-// Step to percentage
+// 跳转到百分比
 player.step(toPercentage: 0.5, andPlay: false)
 ```
 
-## 🔥 SwiftUI Support
+## 🔥 SwiftUI 支持
 
-Although SVGAPlayer-Lite is a UIKit framework, it can be easily integrated into SwiftUI:
+虽然 SVGAPlayer-Lite 是 UIKit 框架，但可以轻松集成到 SwiftUI：
 
 ```swift
 import SwiftUI
@@ -299,13 +299,13 @@ struct SVGAPlayerView: UIViewRepresentable {
     }
 }
 
-// Usage
+// 使用
 struct ContentView: View {
     var body: some View {
         VStack {
             if let url = URL(string: "https://example.com/animation.svga") {
                 SVGAPlayerView(url: url, loops: 0) {
-                    print("Animation finished")
+                    print("动画完成")
                 }
                 .frame(width: 200, height: 200)
             }
@@ -316,23 +316,23 @@ struct ContentView: View {
 }
 ```
 
-## 🎨 Swift Feature Support
+## 🎨 Swift 特性支持
 
-### 1. Optional Chaining
+### 1. 可选链
 
 ```swift
 player.videoItem?.videoSize
 player.delegate?.svgaPlayerDidFinishedAnimation?(player)
 ```
 
-### 2. Guard Statements
+### 2. Guard 语句
 
 ```swift
 guard let url = URL(string: urlString) else { return }
 guard let videoItem = videoItem else { return }
 ```
 
-### 3. Weak References
+### 3. 弱引用
 
 ```swift
 parser.parse(with: url) { [weak self] videoItem in
@@ -341,14 +341,14 @@ parser.parse(with: url) { [weak self] videoItem in
 }
 ```
 
-### 4. Type Inference
+### 4. 类型推断
 
 ```swift
-let player = SVGAPlayer()  // Type automatically inferred
-player.loops = 0           // Int automatically converted to Int32
+let player = SVGAPlayer()  // 自动推断类型
+player.loops = 0           // Int 自动转换为 Int32
 ```
 
-### 5. Extensions
+### 5. 扩展
 
 ```swift
 extension SVGAPlayer {
@@ -361,11 +361,11 @@ extension SVGAPlayer {
     }
 }
 
-// Usage
+// 使用
 player.loadAndPlay(url: url)
 ```
 
-### 6. Protocol Extensions
+### 6. 协议扩展
 
 ```swift
 protocol SVGAPlayable {
@@ -383,23 +383,23 @@ extension SVGAPlayable {
 }
 ```
 
-## 📊 Compatibility Comparison
+## 📊 兼容性对比
 
-| Feature | Support Level | Notes |
-|---------|--------------|-------|
-| Type Safety | ⭐️⭐️⭐️⭐️⭐️ | Complete nullability annotations |
-| Closure Syntax | ⭐️⭐️⭐️⭐️⭐️ | Trailing closure support |
-| Property Access | ⭐️⭐️⭐️⭐️⭐️ | Perfect dot syntax |
-| Method Calls | ⭐️⭐️⭐️⭐️⭐️ | Auto-converted to Swift style |
-| Delegate Protocol | ⭐️⭐️⭐️⭐️⭐️ | Full support |
-| Error Handling | ⭐️⭐️⭐️⭐️ | Closure-based (not throws) |
-| SwiftUI | ⭐️⭐️⭐️⭐️ | Via UIViewRepresentable |
-| Combine | ⭐️⭐️⭐️ | Can be wrapped as Publisher |
-| Async/Await | ⭐️⭐️⭐️ | Can be wrapped as async function |
+| 特性 | 支持程度 | 说明 |
+|------|---------|------|
+| 类型安全 | ⭐️⭐️⭐️⭐️⭐️ | 完整的可空性注解 |
+| 闭包语法 | ⭐️⭐️⭐️⭐️⭐️ | 支持尾随闭包 |
+| 属性访问 | ⭐️⭐️⭐️⭐️⭐️ | 完美的点语法 |
+| 方法调用 | ⭐️⭐️⭐️⭐️⭐️ | 自动转换为 Swift 风格 |
+| 代理协议 | ⭐️⭐️⭐️⭐️⭐️ | 完整支持 |
+| 错误处理 | ⭐️⭐️⭐️⭐️ | 闭包方式（非 throws） |
+| SwiftUI | ⭐️⭐️⭐️⭐️ | 通过 UIViewRepresentable |
+| Combine | ⭐️⭐️⭐️ | 可以封装为 Publisher |
+| Async/Await | ⭐️⭐️⭐️ | 可以封装为 async 函数 |
 
-## 🚀 Modern Swift Feature Wrappers
+## 🚀 现代 Swift 特性封装
 
-### Combine Support
+### Combine 支持
 
 ```swift
 import Combine
@@ -421,10 +421,10 @@ extension SVGAParser {
     }
 }
 
-// Usage
+// 使用
 parser.parsePublisher(url: url)
     .sink { completion in
-        // Handle completion
+        // 处理完成
     } receiveValue: { videoItem in
         player.videoItem = videoItem
         player.startAnimation()
@@ -432,7 +432,7 @@ parser.parsePublisher(url: url)
     .store(in: &cancellables)
 ```
 
-### Async/Await Support
+### Async/Await 支持
 
 ```swift
 extension SVGAParser {
@@ -451,7 +451,7 @@ extension SVGAParser {
     }
 }
 
-// Usage
+// 使用
 Task {
     do {
         let videoItem = try await parser.parse(url: url)
@@ -463,11 +463,11 @@ Task {
 }
 ```
 
-## ⚠️ Important Notes
+## ⚠️ 注意事项
 
-### 1. Memory Management
+### 1. 内存管理
 
-Use `[weak self]` to avoid retain cycles:
+使用 `[weak self]` 避免循环引用：
 
 ```swift
 parser.parse(with: url) { [weak self] videoItem in
@@ -476,9 +476,9 @@ parser.parse(with: url) { [weak self] videoItem in
 }
 ```
 
-### 2. Thread Safety
+### 2. 线程安全
 
-UI updates must be on the main thread:
+UI 更新需要在主线程：
 
 ```swift
 parser.parse(with: url) { videoItem in
@@ -489,45 +489,45 @@ parser.parse(with: url) { videoItem in
 }
 ```
 
-### 3. Optional Type Handling
+### 3. 可选类型处理
 
-Properly handle optional types:
+正确处理可选类型：
 
 ```swift
-// ✅ Recommended
+// ✅ 推荐
 if let videoItem = videoItem {
     player.videoItem = videoItem
 }
 
-// ✅ Or use guard
+// ✅ 或使用 guard
 guard let videoItem = videoItem else { return }
 player.videoItem = videoItem
 ```
 
-## 📝 Summary
+## 📝 总结
 
-SVGAPlayer-Lite Swift compatibility rating: **⭐️⭐️⭐️⭐️⭐️ (5/5)**
+SVGAPlayer-Lite 对 Swift 的兼容性评级：**⭐️⭐️⭐️⭐️⭐️ (5/5)**
 
-### Advantages
+### 优点
 
-✅ **Complete Type Safety** - All APIs have proper nullability annotations
-✅ **Elegant Closure Syntax** - Swift trailing closure support
-✅ **Perfect Property Access** - Dot syntax and automatic conversion
-✅ **Delegate Protocol Support** - Full protocol implementation
-✅ **SwiftUI Compatible** - Integrates via UIViewRepresentable
-✅ **Modern Wrappers** - Easily wrapped as Combine/Async-Await
+✅ **完整的类型安全** - 所有 API 都有正确的可空性注解
+✅ **优雅的闭包语法** - 支持 Swift 尾随闭包
+✅ **完美的属性访问** - 点语法和自动转换
+✅ **代理协议支持** - 完整的协议实现
+✅ **SwiftUI 兼容** - 可通过 UIViewRepresentable 集成
+✅ **现代化封装** - 可轻松封装为 Combine/Async-Await
 
-### Recommendations
+### 建议
 
-1. **Direct Use** - No additional wrapping needed for Swift projects
-2. **Type Safety** - Fully leverage Swift's optional type system
-3. **Memory Management** - Remember to use `[weak self]` to avoid retain cycles
-4. **Modernization** - Wrap as Combine or Async/Await as needed
+1. **直接使用** - 无需任何额外封装即可在 Swift 项目中使用
+2. **类型安全** - 充分利用 Swift 的可选类型系统
+3. **内存管理** - 注意使用 `[weak self]` 避免循环引用
+4. **现代化** - 可根据需要封装为 Combine 或 Async/Await
 
-### Conclusion
+### 结论
 
-SVGAPlayer-Lite is a **Swift-friendly** framework that seamlessly integrates into any Swift project, whether UIKit or SwiftUI. All APIs follow Swift best practices and provide an excellent developer experience.
+SVGAPlayer-Lite 是一个**对 Swift 非常友好**的框架，可以无缝集成到任何 Swift 项目中，无论是 UIKit 还是 SwiftUI。所有 API 都遵循 Swift 的最佳实践，提供了出色的开发体验。
 
 ---
 
-**Complete Example Code**: [SwiftCompatibilityTest.swift](SwiftCompatibilityTest.swift)
+**完整示例代码**: [SwiftCompatibilityTest.swift](SwiftCompatibilityTest.swift)

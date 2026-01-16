@@ -1,202 +1,204 @@
-# SVGAPlayer-Lite 优化说明
+# SVGAPlayer-Lite Optimization Guide
 
-## 项目概述
+[中文文档](OPTIMIZATION_CN.md) | English
 
-SVGAPlayer-Lite 是基于 [SVGAPlayer-iOS](https://github.com/svga/SVGAPlayer-iOS) 的轻量级优化版本，专注于提升性能、降低内存占用，并提供更好的现代化支持。
+## Project Overview
 
-## 核心优化点
+SVGAPlayer-Lite is a lightweight optimized version based on [SVGAPlayer-iOS](https://github.com/svga/SVGAPlayer-iOS), focusing on improving performance, reducing memory usage, and providing better modern support.
 
-### 1. 内存管理优化
+## Core Optimizations
 
-#### 优化前（SVGAPlayer 原版）
-- **平均内存占用**: ~15-20MB（播放中等复杂度动画）
-- **峰值内存**: 可达 30-40MB（复杂动画或多实例）
-- **内存泄漏风险**: 存在循环引用和未释放的资源
+### 1. Memory Management Optimization
 
-#### 优化后（SVGAPlayer-Lite）
-- **平均内存占用**: ~8-12MB（相同动画）
-- **峰值内存**: 控制在 20MB 以内
-- **内存优化率**: **约 40-50% 降低**
+#### Before Optimization (Original SVGAPlayer)
+- **Average Memory Usage**: ~15-20MB (playing medium complexity animations)
+- **Peak Memory**: Up to 30-40MB (complex animations or multiple instances)
+- **Memory Leak Risk**: Circular references and unreleased resources
 
-#### 具体优化措施
+#### After Optimization (SVGAPlayer-Lite)
+- **Average Memory Usage**: ~8-12MB (same animations)
+- **Peak Memory**: Controlled within 20MB
+- **Memory Optimization Rate**: **Approximately 40-50% reduction**
+
+#### Specific Optimization Measures
 ```objective-c
-// 1. 改进图片缓存策略
-// 优化前：全量缓存所有帧
-// 优化后：智能缓存 + 按需加载
+// 1. Improved image caching strategy
+// Before: Full caching of all frames
+// After: Smart caching + on-demand loading
 
-// 2. SVGAImage 类优化
-// 新增轻量级图片处理类，减少 UIImage 对象创建
+// 2. SVGAImage class optimization
+// Added lightweight image processing class, reducing UIImage object creation
 // Source/SVGAImage.h & SVGAImage.m
 
-// 3. 及时释放不需要的资源
+// 3. Timely release of unnecessary resources
 - (void)dealloc {
-    // 清理缓存
+    // Clear cache
     [self clearCache];
-    // 释放图层
+    // Release layers
     [self removeAllLayers];
 }
 ```
 
-### 2. 渲染性能优化
+### 2. Rendering Performance Optimization
 
-#### 优化前
-- **帧率**: 30-45 FPS（复杂动画）
-- **CPU 占用**: 15-25%
-- **GPU 占用**: 20-30%
+#### Before Optimization
+- **Frame Rate**: 30-45 FPS (complex animations)
+- **CPU Usage**: 15-25%
+- **GPU Usage**: 20-30%
 
-#### 优化后
-- **帧率**: 稳定 60 FPS
-- **CPU 占用**: 8-15%（降低约 40%）
-- **GPU 占用**: 12-20%（降低约 33%）
+#### After Optimization
+- **Frame Rate**: Stable 60 FPS
+- **CPU Usage**: 8-15% (approximately 40% reduction)
+- **GPU Usage**: 12-20% (approximately 33% reduction)
 
-#### 具体优化措施
+#### Specific Optimization Measures
 ```objective-c
-// 1. 优化图层合成
-// SVGAContentLayer.m 中改进了图层渲染逻辑
+// 1. Optimized layer composition
+// Improved layer rendering logic in SVGAContentLayer.m
 
-// 2. 减少不必要的重绘
+// 2. Reduced unnecessary redraws
 - (void)stepToFrame:(NSInteger)frame andPlay:(BOOL)andPlay {
     if (_currentFrame == frame && !andPlay) {
-        return; // 避免重复渲染
+        return; // Avoid duplicate rendering
     }
     // ...
 }
 
-// 3. 使用更高效的动画驱动
-// 优化 CADisplayLink 的使用方式
+// 3. More efficient animation driver
+// Optimized CADisplayLink usage
 ```
 
-### 3. 依赖库现代化
+### 3. Dependency Modernization
 
-#### 依赖版本对比
+#### Dependency Version Comparison
 
-| 依赖库 | SVGAPlayer 原版 | SVGAPlayer-Lite | 说明 |
-|--------|----------------|-----------------|------|
-| Protobuf | ~> 3.4 (2017年) | 3.27.2 (2024年) | 修复安全漏洞，提升性能 |
-| SSZipArchive | >= 1.8.1 | ~> 2.1.4 | 更好的压缩性能 |
-| iOS 最低版本 | 7.0 | 12.0 | 移除过时代码，减小包体积 |
+| Dependency | Original SVGAPlayer | SVGAPlayer-Lite | Notes |
+|-----------|-------------------|-----------------|-------|
+| Protobuf | ~> 3.4 (2017) | 3.27.2 (2024) | Fixed security vulnerabilities, improved performance |
+| SSZipArchive | >= 1.8.1 | 2.4.3 | Better compression performance |
+| Minimum iOS | 7.0 | 12.0 | Removed outdated code, reduced package size |
 
-#### 优化效果
-- **编译速度**: 提升约 30%
-- **包体积**: 减少约 15%（移除过时代码）
-- **兼容性**: 完美支持 iOS 12.0 - iOS 18.0+
+#### Optimization Effects
+- **Compilation Speed**: Improved by approximately 30%
+- **Package Size**: Reduced by approximately 15% (removed outdated code)
+- **Compatibility**: Perfect support for iOS 12.0 - iOS 18.0+
 
-### 4. 代码质量优化
+### 4. Code Quality Optimization
 
-#### 修复的问题
-1. **OSAtomic 废弃 API 问题**
+#### Fixed Issues
+1. **OSAtomic Deprecated API Issue**
    ```objective-c
-   // 添加正确的头文件导入
+   // Added correct header import
    #include <libkern/OSAtomic.h>
    ```
 
-2. **类型安全改进**
+2. **Type Safety Improvements**
    ```objective-c
-   // SVGAImage 类型替代 UIImage，避免类型混淆
+   // SVGAImage type replaces UIImage, avoiding type confusion
    // Source/SVGAImage.h
    @interface SVGAImage : NSObject
    @property (nonatomic, strong) UIImage *image;
    @end
    ```
 
-3. **废弃 API 替换**
+3. **Deprecated API Replacement**
    ```objective-c
-   // 优化前：使用 frameInterval（iOS 10 废弃）
+   // Before: Using frameInterval (deprecated in iOS 10)
    displayLink.frameInterval = 2;
 
-   // 优化后：使用 preferredFramesPerSecond
+   // After: Using preferredFramesPerSecond
    displayLink.preferredFramesPerSecond = 30;
    ```
 
-### 5. 启动性能优化
+### 5. Startup Performance Optimization
 
-#### 优化前
-- **首次加载时间**: 150-200ms
-- **解析 SVGA 文件**: 80-120ms
-- **内存分配**: 10-15MB
+#### Before Optimization
+- **First Load Time**: 150-200ms
+- **SVGA File Parsing**: 80-120ms
+- **Memory Allocation**: 10-15MB
 
-#### 优化后
-- **首次加载时间**: 80-100ms（**提升 50%**）
-- **解析 SVGA 文件**: 40-60ms（**提升 50%**）
-- **内存分配**: 5-8MB（**降低 50%**）
+#### After Optimization
+- **First Load Time**: 80-100ms (**50% improvement**)
+- **SVGA File Parsing**: 40-60ms (**50% improvement**)
+- **Memory Allocation**: 5-8MB (**50% reduction**)
 
-#### 优化措施
+#### Optimization Measures
 ```objective-c
-// 1. 延迟初始化
-// 2. 预分配内存池
-// 3. 优化 Protobuf 解析流程
+// 1. Lazy initialization
+// 2. Pre-allocated memory pool
+// 3. Optimized Protobuf parsing process
 ```
 
-## 性能测试数据
+## Performance Test Data
 
-### 测试环境
-- **设备**: iPhone 12 Pro
-- **系统**: iOS 17.0
-- **测试动画**: 标准复杂度 SVGA 文件（2MB，60帧，30秒）
+### Test Environment
+- **Device**: iPhone 12 Pro
+- **System**: iOS 17.0
+- **Test Animation**: Standard complexity SVGA file (2MB, 60 frames, 30 seconds)
 
-### 内存占用对比
+### Memory Usage Comparison
 
-| 场景 | SVGAPlayer 原版 | SVGAPlayer-Lite | 优化率 |
-|------|----------------|-----------------|--------|
-| 空闲状态 | 2.5 MB | 1.2 MB | 52% ↓ |
-| 加载动画 | 18.3 MB | 9.7 MB | 47% ↓ |
-| 播放中 | 22.1 MB | 11.5 MB | 48% ↓ |
-| 峰值内存 | 35.6 MB | 18.2 MB | 49% ↓ |
-| 播放结束 | 8.4 MB | 3.8 MB | 55% ↓ |
+| Scenario | Original SVGAPlayer | SVGAPlayer-Lite | Optimization |
+|----------|-------------------|-----------------|--------------|
+| Idle State | 2.5 MB | 1.2 MB | 52% ↓ |
+| Loading Animation | 18.3 MB | 9.7 MB | 47% ↓ |
+| Playing | 22.1 MB | 11.5 MB | 48% ↓ |
+| Peak Memory | 35.6 MB | 18.2 MB | 49% ↓ |
+| After Playback | 8.4 MB | 3.8 MB | 55% ↓ |
 
-### CPU 占用对比
+### CPU Usage Comparison
 
-| 场景 | SVGAPlayer 原版 | SVGAPlayer-Lite | 优化率 |
-|------|----------------|-----------------|--------|
-| 解析文件 | 45% | 28% | 38% ↓ |
-| 首帧渲染 | 38% | 22% | 42% ↓ |
-| 稳定播放 | 18% | 11% | 39% ↓ |
-| 平均占用 | 22% | 13% | 41% ↓ |
+| Scenario | Original SVGAPlayer | SVGAPlayer-Lite | Optimization |
+|----------|-------------------|-----------------|--------------|
+| File Parsing | 45% | 28% | 38% ↓ |
+| First Frame Rendering | 38% | 22% | 42% ↓ |
+| Stable Playback | 18% | 11% | 39% ↓ |
+| Average Usage | 22% | 13% | 41% ↓ |
 
-### 帧率对比
+### Frame Rate Comparison
 
-| 动画复杂度 | SVGAPlayer 原版 | SVGAPlayer-Lite |
-|-----------|----------------|-----------------|
-| 简单动画 | 58 FPS | 60 FPS |
-| 中等复杂度 | 42 FPS | 60 FPS |
-| 复杂动画 | 32 FPS | 58 FPS |
-| 多实例（3个） | 25 FPS | 55 FPS |
+| Animation Complexity | Original SVGAPlayer | SVGAPlayer-Lite |
+|---------------------|-------------------|-----------------|
+| Simple Animation | 58 FPS | 60 FPS |
+| Medium Complexity | 42 FPS | 60 FPS |
+| Complex Animation | 32 FPS | 58 FPS |
+| Multiple Instances (3) | 25 FPS | 55 FPS |
 
-### 启动时间对比
+### Startup Time Comparison
 
-| 指标 | SVGAPlayer 原版 | SVGAPlayer-Lite | 优化率 |
-|------|----------------|-----------------|--------|
-| 首次加载 | 185 ms | 92 ms | 50% ↓ |
-| 二次加载（缓存） | 45 ms | 18 ms | 60% ↓ |
-| 解析 SVGA | 95 ms | 48 ms | 49% ↓ |
-| 首帧显示 | 220 ms | 110 ms | 50% ↓ |
+| Metric | Original SVGAPlayer | SVGAPlayer-Lite | Optimization |
+|--------|-------------------|-----------------|--------------|
+| First Load | 185 ms | 92 ms | 50% ↓ |
+| Second Load (Cached) | 45 ms | 18 ms | 60% ↓ |
+| SVGA Parsing | 95 ms | 48 ms | 49% ↓ |
+| First Frame Display | 220 ms | 110 ms | 50% ↓ |
 
-## 包体积对比
+## Package Size Comparison
 
-| 项目 | SVGAPlayer 原版 | SVGAPlayer-Lite | 优化 |
-|------|----------------|-----------------|------|
-| 源码大小 | 856 KB | 724 KB | 15% ↓ |
-| 编译后 Framework | 2.3 MB | 1.9 MB | 17% ↓ |
-| 包含依赖后 | 5.8 MB | 4.6 MB | 21% ↓ |
+| Item | Original SVGAPlayer | SVGAPlayer-Lite | Optimization |
+|------|-------------------|-----------------|--------------|
+| Source Code Size | 856 KB | 724 KB | 15% ↓ |
+| Compiled Framework | 2.3 MB | 1.9 MB | 17% ↓ |
+| With Dependencies | 5.8 MB | 4.6 MB | 21% ↓ |
 
-## 兼容性改进
+## Compatibility Improvements
 
-### 系统支持
+### System Support
 - ✅ iOS 12.0 - iOS 18.0+
 - ✅ Xcode 14.0 - Xcode 16.0+
-- ✅ Swift 5.0+ 完美兼容
+- ✅ Swift 5.0+ perfect compatibility
 - ✅ Objective-C 2.0+
 
-### 架构支持
+### Architecture Support
 - ✅ arm64 (iPhone 5s+)
 - ✅ arm64e (iPhone XS+)
 - ✅ x86_64 (Simulator)
 - ✅ Apple Silicon (M1/M2/M3 Mac)
 
-## 新增特性
+## New Features
 
-### 1. SVGAImage 类
-轻量级图片处理类，专为 SVGA 优化：
+### 1. SVGAImage Class
+Lightweight image processing class optimized for SVGA:
 ```objective-c
 @interface SVGAImage : NSObject
 @property (nonatomic, strong) UIImage *image;
@@ -205,22 +207,22 @@ SVGAPlayer-Lite 是基于 [SVGAPlayer-iOS](https://github.com/svga/SVGAPlayer-iO
 @end
 ```
 
-### 2. 改进的缓存策略
-- 智能 LRU 缓存
-- 内存压力自动清理
-- 可配置缓存大小
+### 2. Improved Caching Strategy
+- Smart LRU cache
+- Automatic cleanup under memory pressure
+- Configurable cache size
 
-### 3. 更好的错误处理
-- 详细的错误信息
-- 优雅的降级处理
-- 完善的日志系统
+### 3. Better Error Handling
+- Detailed error messages
+- Graceful degradation
+- Comprehensive logging system
 
-## 向后兼容性
+## Backward Compatibility
 
-SVGAPlayer-Lite 保持了与原版 SVGAPlayer 的 API 兼容性：
+SVGAPlayer-Lite maintains API compatibility with the original SVGAPlayer:
 
 ```objective-c
-// 原版代码无需修改即可使用
+// Original code works without modification
 SVGAPlayer *player = [[SVGAPlayer alloc] initWithFrame:frame];
 SVGAParser *parser = [[SVGAParser alloc] init];
 [parser parseWithURL:url completionBlock:^(SVGAVideoEntity *entity) {
@@ -229,113 +231,118 @@ SVGAParser *parser = [[SVGAParser alloc] init];
 } failureBlock:nil];
 ```
 
-## 迁移指南
+## Migration Guide
 
-### 从 SVGAPlayer 迁移到 SVGAPlayer-Lite
+### Migrating from SVGAPlayer to SVGAPlayer-Lite
 
-#### 1. 更新 Podfile
+#### 1. Update Podfile
 ```ruby
-# 替换
+# Replace
 # pod 'SVGAPlayer'
 
-# 为
+# With
 pod 'SVGAPlayerLite'
 ```
 
-#### 2. 更新导入语句
+#### 2. Update Import Statements
 ```objective-c
-// 替换
+// Replace
 // #import <SVGAPlayer/SVGA.h>
 
-// 为
+// With
 #import <SVGAPlayerLite/SVGA.h>
 ```
 
-#### 3. 运行测试
+#### 3. Run Tests
 ```bash
 pod install
-# 运行你的测试用例，确保功能正常
+# Run your test cases to ensure functionality
 ```
 
-**注意**: 99% 的代码无需修改，API 完全兼容！
+**Note**: 99% of code requires no modification, API is fully compatible!
 
-## 性能优化建议
+## Performance Optimization Recommendations
 
-### 1. 合理使用缓存
+### 1. Reasonable Cache Usage
 ```objective-c
-// 设置缓存大小（默认 20MB）
+// Set cache size (default 20MB)
 [SVGAParser setCacheSize:30 * 1024 * 1024]; // 30MB
 ```
 
-### 2. 及时释放资源
+### 2. Timely Resource Release
 ```objective-c
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [self.player stopAnimation];
-    self.player.videoItem = nil; // 释放资源
+    self.player.videoItem = nil; // Release resources
 }
 ```
 
-### 3. 避免同时播放过多动画
+### 3. Avoid Playing Too Many Animations Simultaneously
 ```objective-c
-// 建议同屏不超过 3-4 个 SVGA 动画
-// 使用对象池复用 player 实例
+// Recommend no more than 3-4 SVGA animations on screen
+// Use object pool to reuse player instances
 ```
 
-### 4. 预加载优化
+### 4. Preload Optimization
 ```objective-c
-// 提前加载常用动画
+// Preload common animations
 [parser parseWithNamed:@"common_animation"
               inBundle:nil
        completionBlock:^(SVGAVideoEntity *entity) {
-    // 缓存起来，需要时直接使用
+    // Cache for later use
     [self.cache setObject:entity forKey:@"common"];
 } failureBlock:nil];
 ```
 
-## 已知问题与限制
+## Known Issues and Limitations
 
-1. **iOS 12.0 以下不支持**
-   - 如需支持更低版本，请使用原版 SVGAPlayer
+1. **iOS 12.0 and below not supported**
+   - Use original SVGAPlayer for lower versions
 
-2. **部分废弃 API 已移除**
-   - 如使用了废弃 API，需要更新代码
+2. **Some deprecated APIs removed**
+   - Code using deprecated APIs needs updating
 
-3. **Protobuf 版本固定**
-   - 使用 3.27.2 版本，确保稳定性
+3. **Protobuf version locked**
+   - Uses version 3.27.2 for stability
 
-## 贡献与反馈
+## Contributing and Feedback
 
 - **GitHub**: https://github.com/jfyGiveMeFive/SVGAPlayer-Lite
 - **Issues**: https://github.com/jfyGiveMeFive/SVGAPlayer-Lite/issues
-- **原版项目**: https://github.com/svga/SVGAPlayer-iOS
+- **Original Project**: https://github.com/svga/SVGAPlayer-iOS
 
-## 版本历史
+## Version History
+
+### v1.0.5 (2026-01-15)
+- 🔧 Lock dependency versions for consistency
+- 📦 SSZipArchive fixed to 2.4.3
+- 📦 Protobuf fixed to 3.27.2
 
 ### v1.0.2 (2026-01-15)
-- 🔧 固定 Protobuf 版本为 3.27.2
-- 🐛 修复 OSAtomic 头文件导入问题
-- 📝 添加详细的优化说明文档
+- 🔧 Fixed Protobuf version to 3.27.2
+- 🐛 Fixed OSAtomic header import issue
+- 📝 Added detailed optimization documentation
 
 ### v1.0.1 (2026-01-15)
-- 🔧 更新 Protobuf 依赖到 3.27.x
-- 🐛 修复编译错误
-- ✨ 添加 CocoaPods 支持
+- 🔧 Updated Protobuf dependency to 3.27.x
+- 🐛 Fixed compilation errors
+- ✨ Added CocoaPods support
 
 ### v1.0.0 (2026-01-15)
-- 🎉 首次发布
-- ⚡️ 内存占用降低 40-50%
-- ⚡️ CPU 占用降低 40%
-- ⚡️ 启动速度提升 50%
-- 📦 包体积减少 15-20%
-- ✨ 支持 iOS 12.0+
+- 🎉 Initial release
+- ⚡️ 40-50% lower memory usage
+- ⚡️ 40% lower CPU usage
+- ⚡️ 50% faster startup
+- 📦 15-20% smaller package size
+- ✨ iOS 12.0+ support
 
-## 许可证
+## License
 
 Apache License 2.0
 
-基于 [SVGAPlayer-iOS](https://github.com/svga/SVGAPlayer-iOS) 开发，感谢原作者的贡献。
+Developed based on [SVGAPlayer-iOS](https://github.com/svga/SVGAPlayer-iOS), thanks to the original authors for their contributions.
 
 ---
 
-**SVGAPlayer-Lite** - 更快、更轻、更现代的 SVGA 动画播放器 🚀
+**SVGAPlayer-Lite** - Faster, Lighter, More Modern SVGA Animation Player 🚀
