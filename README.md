@@ -20,6 +20,8 @@ Compared to the original SVGAPlayer, SVGAPlayer-Lite achieves significant perfor
 - 📦 **15-20% Smaller Package Size** - Removed outdated code
 - 🎯 **Stable 60 FPS** - Optimized rendering performance
 
+> ⚠️ **Note:** Performance metrics are measured on real iOS devices. Simulator measurements may not be accurate and should not be used for performance evaluation.
+
 📊 **[View Detailed Optimization](OPTIMIZATION.md)**
 
 ## Features

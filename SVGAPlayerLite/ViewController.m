@@ -61,10 +61,7 @@ static SVGAParser *parser;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 //    parser.enabledMemoryCache = YES;
     
-    NSString *bottlePath = [[NSBundle mainBundle] pathForResource:@"Rocket" ofType:@"svga"];
-    NSURL *bottleUrl = [NSURL fileURLWithPath:bottlePath];
-    
-    [parser parseWithURL:bottleUrl
+    [parser parseWithURL:[NSURL URLWithString:items[arc4random() % items.count]]
          completionBlock:^(SVGAVideoEntity * _Nullable videoItem) {
              [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
              if (videoItem != nil) {

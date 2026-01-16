@@ -140,24 +140,34 @@
                                     <action selector="onSliderClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Adw-EM-7q9"/>
                                 </connections>
                             </slider>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C20-qv-lcV">
-                                <rect key="frame" x="180" y="132" width="30" height="30"/>
-                                <state key="normal" title="开始"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C20-qv-lcV">
+                                <rect key="frame" x="168" y="128" width="36" height="34"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="开始">
+                                    <color key="titleColor" red="1" green="0.15686274510000001" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <state key="selected" title="暂停"/>
                                 <connections>
                                     <action selector="onBeginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="E08-3x-QFp"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bja-sU-K2f">
-                                <rect key="frame" x="121" y="132" width="30" height="30"/>
-                                <state key="normal" title="快退"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bja-sU-K2f">
+                                <rect key="frame" x="103" y="128" width="36" height="34"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="快退">
+                                    <color key="titleColor" red="1" green="0.15686274510000001" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onRetreatButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gtQ-WY-bYg"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7F2-zY-5ah">
-                                <rect key="frame" x="236" y="132" width="30" height="30"/>
-                                <state key="normal" title="快进"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7F2-zY-5ah">
+                                <rect key="frame" x="230" y="128" width="36" height="34"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="快进">
+                                    <color key="titleColor" red="1" green="0.15686274510000001" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onForwardButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3Zv-gX-WB3"/>
                                 </connections>
@@ -198,7 +208,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="247" y="36"/>
+            <point key="canvasLocation" x="417" y="27"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="r3U-AC-YtV">
@@ -214,7 +224,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VA1-XL-Er3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1444" y="36"/>
+            <point key="canvasLocation" x="-1444" y="27"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Sy5-uZ-xnf">
@@ -229,7 +239,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aep-Ar-Gum">
-                                <rect key="frame" x="119" y="316" width="138" height="35"/>
+                                <rect key="frame" x="118.5" y="316" width="138" height="35"/>
                                 <color key="tintColor" red="1" green="0.15686274510000001" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="点击播放SVGA"/>
@@ -248,7 +258,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YX8-UT-XvQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-569" y="27"/>
+            <point key="canvasLocation" x="-526" y="27"/>
         </scene>
     </scenes>
 </document>
