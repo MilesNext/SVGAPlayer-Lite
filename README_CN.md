@@ -42,13 +42,13 @@ SVGAPlayer-Lite 是一个轻量级高性能的 SVGA 动画播放器，基于 SVG
 
 1. File > Add Package Dependencies
 2. 输入：`https://github.com/jfyGiveMeFive/SVGAPlayer-Lite.git`
-3. 选择版本：`1.0.7` 或更高
+3. 选择版本：`1.0.8` 或更高
 
 或在 `Package.swift` 中添加：
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jfyGiveMeFive/SVGAPlayer-Lite.git", from: "1.0.7")
+    .package(url: "https://github.com/jfyGiveMeFive/SVGAPlayer-Lite.git", from: "1.0.8")
 ]
 ```
 

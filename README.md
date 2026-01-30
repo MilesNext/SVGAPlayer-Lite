@@ -42,13 +42,13 @@ Add the package to your project via Xcode:
 
 1. File > Add Package Dependencies
 2. Enter: `https://github.com/jfyGiveMeFive/SVGAPlayer-Lite.git`
-3. Select version: `1.0.7` or later
+3. Select version: `1.0.8` or later
 
 Or add to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jfyGiveMeFive/SVGAPlayer-Lite.git", from: "1.0.7")
+    .package(url: "https://github.com/jfyGiveMeFive/SVGAPlayer-Lite.git", from: "1.0.8")
 ]
 ```
 
